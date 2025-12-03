@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Hello Antigravity - Docker Setup
 
-## Getting Started
+This project consists of a Next.js frontend and a FastAPI backend, both dockerized for easy deployment.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Docker
+- Docker Compose
+
+## Project Structure
+
+```
+.
+├── backend/          # FastAPI backend
+│   ├── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
+├── frontend/         # Next.js frontend
+│   ├── src/
+│   ├── package.json
+│   └── Dockerfile
+└── docker-compose.yml
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Running with Docker
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build and run both services:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+docker-compose up --build
+```
 
-## Learn More
+This will:
+- Build the backend Docker image
+- Build the frontend Docker image
+- Start both services
+- Frontend will be available at `http://localhost:3000`
+- Backend API will be available at `http://localhost:8000`
 
-To learn more about Next.js, take a look at the following resources:
+### Run in detached mode:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+docker-compose up -d
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Stop the services:
 
-## Deploy on Vercel
+```bash
+docker-compose down
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### View logs:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# All services
+docker-compose logs -f
+
+# Specific service
+docker-compose logs -f frontend
+docker-compose logs -f backend
+```
+
+## Development (Without Docker)
+
+### Backend
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Environment Variables
+
+The frontend uses `NEXT_PUBLIC_BACKEND_URL` to connect to the backend:
+- **Docker**: Set to `http://backend:8000` (service name)
+- **Local development**: Defaults to `http://localhost:8000`
+
+See `.env.example` for reference.
+
+## Debugging
+
+VS Code launch configurations are available in `.vscode/launch.json`:
+- **Python: FastAPI** - Debug the backend
+- **Next.js: Chrome** - Debug frontend in Chrome
+- **Next.js: Edge** - Debug frontend in Edge
+- **Next.js: Server** - Debug Next.js server-side code
+- **Next.js: Full Stack** - Debug both server and client simultaneously
