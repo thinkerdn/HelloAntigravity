@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  backend:
+    command: ./start-debug.sh
+    ports:
+      - "8000:8000"
+      - "5678:5678" # Debug port
+    volumes:
+      - ./backend:/app # Mount source for live updates
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    volumes:
+      - ./frontend/src:/app/src # Mount source for live updates

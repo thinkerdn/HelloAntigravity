@@ -91,8 +91,34 @@ See `.env.example` for reference.
 ## Debugging
 
 VS Code launch configurations are available in `.vscode/launch.json`:
-- **Python: FastAPI** - Debug the backend
+
+### Local Development Debugging
+- **Python: FastAPI** - Debug the backend locally
 - **Next.js: Chrome** - Debug frontend in Chrome
 - **Next.js: Edge** - Debug frontend in Edge
 - **Next.js: Server** - Debug Next.js server-side code
 - **Next.js: Full Stack** - Debug both server and client simultaneously
+
+### Docker Container Debugging
+
+To debug the backend running in a Docker container:
+
+1. **Start containers with debug mode:**
+   ```bash
+   docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+   ```
+
+2. **Attach debugger in VS Code:**
+   - Go to "Run and Debug" (Ctrl+Shift+D)
+   - Select "Python: Docker Attach"
+   - Press F5 to attach to the running container
+   - Set breakpoints in `backend/main.py`
+   - Make a request to `http://localhost:8000/api/hello`
+
+The debug server will wait for the debugger to attach before starting. Once attached, you can:
+- Set breakpoints
+- Step through code
+- Inspect variables
+- All while the code runs inside the Docker container
+
+**Note:** The dev compose file also mounts source code as volumes, so changes are reflected immediately without rebuilding.

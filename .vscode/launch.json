@@ -16,6 +16,22 @@
             "justMyCode": true
         },
         {
+            "name": "Python: Docker Attach",
+            "type": "python",
+            "request": "attach",
+            "connect": {
+                "host": "localhost",
+                "port": 5678
+            },
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}/backend",
+                    "remoteRoot": "/app"
+                }
+            ],
+            "justMyCode": true
+        },
+        {
             "name": "Next.js: Chrome",
             "type": "chrome",
             "request": "launch",
